@@ -40,47 +40,21 @@
     </script>
 
 
-    <form action="https://snackpi.ddnss.de/resetPassword" target="_self" method="post" id="formId"
-          onsubmit="return validate();">
-        <label for="password">Passwort:</label><br>
-        <input type="password" id="password" name="password" required><br>
-        <label for="passwordrep">Passwort wiederholen:</label><br>
-        <input type="password" id="passwordrep" name="passwordrep" required><br>
-        <input type="submit" value="Abschicken">
-        <input id="tokenField" type="hidden" name="passwordresettoken"/>
-    </form>
+
+<form action="http://127.0.0.1:5000/" target="_self" method="post" id="formId"
+      onsubmit="return validate();">
+    <label for="name">Name:</label><br>
+    <input type="name" id="name" name="name" required><br>
+    <label for="password">Passwort:</label><br>
+    <input type="password" id="password" name="password" required><br>
+    <label for="passwordrep">Passwort wiederholen:</label><br>
+    <input type="password" id="passwordrep" name="passwordrep" required><br>
+    <input type="submit" value="Abschicken">
+</form>
     <p2 id="text"></p2>
 </div>
-
-<div class="containerForm">
-    <p1>Geben sie einen Integer ein.</p1>
-    <script>
-        function validateInteger() {
-            let integer = parseInt(document.getElementById("integer").value);
-            console.log(integer);
-            let response;
-            if (Number.isInteger(integer)){
-                response = "Integer Abgeschickt";
-                document.getElementById("integerResponse").innerHTML = response;
-                return true;
-            }else{
-                response = "Kein valider Integer";
-            }
-
-            document.getElementById("integerResponse").innerHTML = response;
-            return false
-        }
-    </script>
-
-    <form action="http://192.168.0.174:8080" target="_blank" method="post" id="integerForm"
-          onsubmit="return validateInteger();">
-        <label for="integer">Integer:</label> <br>
-        <input type="text" id="integer" name="integer" required>
-        <input type="submit" value="Abschicken">
-    </form>
-    <p2 id="integerResponse"></p2>
-</div>
 </body>
+
 <style>
     div.containerHeadline {
         margin-left: auto;
