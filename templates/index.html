@@ -40,19 +40,45 @@
     </script>
 
 
-
-<form action="http://127.0.0.1:5000/" target="_self" method="post" id="formId"
-      onsubmit="return validate();">
-    <label for="name">Name:</label><br>
-    <input type="name" id="name" name="name" required><br>
-    <label for="password">Passwort:</label><br>
-    <input type="password" id="password" name="password" required><br>
-    <label for="passwordrep">Passwort wiederholen:</label><br>
-    <input type="password" id="passwordrep" name="passwordrep" required><br>
-    <input type="submit" value="Abschicken">
-</form>
+    <form action="http://127.0.0.1:5000/" target="_self" method="post" id="formId"
+          onsubmit="return validate();">
+        <label for="name">Name:</label><br>
+        <input type="name" id="name" name="name" required><br>
+        <label for="password">Passwort:</label><br>
+        <input type="password" id="password" name="password" required><br>
+        <label for="passwordrep">Passwort wiederholen:</label><br>
+        <input type="password" id="passwordrep" name="passwordrep" required><br>
+        <input type="submit" value="Abschicken">
+    </form>
     <p2 id="text"></p2>
 </div>
+
+<br>
+
+<div class="containerForm">
+    <p1>Geben Sie einen Integer ein.</p1>
+    <script>
+        function validateInteger(){
+            let integer = parseInt(document.getElementById("integer").value);
+            console.log(integer);
+            if(Number.isInteger(integer)){
+                return true;
+            }else{
+                document.getElementById("integerResponse").innerHTML = "no valid Integer";
+            }
+            return false;
+        }
+    </script>
+
+    <form action="http://127.0.0.1:5000/" target="_self" method="post" id="integerForm" onsubmit="return validateInteger();">
+        <label for="integer">Integer: </label>
+        <input type="text" id="integer" name="integer" required><br>
+        <input type="submit" value="Abschicken">
+    </form>
+    <p2 id="integerResponse"></p2>
+</div>
+
+
 </body>
 
 <style>
@@ -98,17 +124,7 @@
         font-size: 16px;
     }
 
-    input[type=password], select {
-        width: 100%;
-        padding: 12px 20px;
-        margin: 8px 0;
-        display: inline-block;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    input[type=text], select {
+    input[type=password], input[type=text], input[type=name], select {
         width: 100%;
         padding: 12px 20px;
         margin: 8px 0;
