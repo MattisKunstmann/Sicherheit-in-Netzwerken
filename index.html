@@ -39,14 +39,15 @@
 
 
 
-<form action="https://snackpi.ddnss.de/resetPassword" target="_self" method="post" id="formId"
+<form action="http//localhost:8080" target="_self" method="post" id="formId"
       onsubmit="return validate();">
+    <label for="name">Name:</label><br>
+    <input type="name" id="name" name="name" required><br>
     <label for="password">Passwort:</label><br>
     <input type="password" id="password" name="password" required><br>
     <label for="passwordrep">Passwort wiederholen:</label><br>
     <input type="password" id="passwordrep" name="passwordrep" required><br>
     <input type="submit" value="Abschicken">
-    <input id="tokenField" type="hidden" name="passwordresettoken"/>
 </form>
     <p2 id="text"></p2>
 </div>
