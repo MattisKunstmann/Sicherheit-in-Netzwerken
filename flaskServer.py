@@ -1,20 +1,15 @@
-
 import null
 from flask import Flask, request, render_template
-from flask_cors import CORS, cross_origin
 import mysql.connector
 
 app = Flask(__name__)
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
-hostName = "0.0.0.0"
+hostName = "localhost"
 serverPort = 8080
 db = null;
 
 query1 = "select * from zugangsdaten"
 query2 = "insert into zugangsdaten values (%s,%s,%s)"
-writeIntQuery = "insert into integers (integerNumber) values (%s)"
 dbName = "sicherheit"
 
 
@@ -26,13 +21,6 @@ def gfg():
         writeInDatabase((666,name,password))
         return "OK"
 
-@app.route('/integer/', methods=["POST"])
-@cross_origin()
-def intToDB():
-    if request.method == "POST":
-        integer = request.form.get("integer")
-        writeIntToDatabase((integer,))
-        return "OK"
 
 @app.route('/', methods=["GET"])
 def get():
@@ -42,7 +30,7 @@ def get():
 def initiateDatabaseConnection():
     return mysql.connector.connect(
         host="localhost", user="root",
-        password="IT-Sicherheit_Lab", database=dbName)
+        password="", database=dbName)
 
 #help function to ensure we got connection to the database
 def printTableFromDatabase():
@@ -58,16 +46,13 @@ def writeInDatabase(data):
     cursor = db.cursor()
     cursor.execute(query2, data)
     db.commit()
+    table = cursor.fetchall()
+    for attr in table:
+        print(attr)
 
-#writes an integer form the form to the table integers in the database
-def writeIntToDatabase(data):
-    cursor = db.cursor()
-    cursor.execute(writeIntQuery, data)
-    db.commit()
+
 
 if __name__ == '__main__':
     db = initiateDatabaseConnection();
     printTableFromDatabase()
-    app.run(host=hostName)
-
-
+    app.run()
