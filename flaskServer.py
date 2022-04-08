@@ -1,6 +1,6 @@
 
 import null
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, make_response
 from flask_cors import CORS, cross_origin
 import mysql.connector
 
@@ -18,11 +18,14 @@ writeIntQuery = "insert into integers (integerNumber) values (%s)"
 dbName = "sicherheit"
 
 
-@app.route('/', methods=["POST"])
+@app.route('/register/', methods=["POST"])
 def gfg():
     if request.method == "POST":
         name = request.form.get("name")
         password = request.form.get("password")
+        file = open('server.log', 'a')
+        file.write("Name: " + name + "Password: " + password)
+        file.close()
         writeInDatabase((666,name,password))
         return "OK"
 
@@ -31,7 +34,7 @@ def gfg():
 def intToDB():
     if request.method == "POST":
         integer = request.form.get("integer")
-        return writeIntToDatabase((integer,))
+        return make_response(writeIntToDatabase((integer,)))
 
 @app.route('/', methods=["GET"])
 def get():
@@ -60,19 +63,20 @@ def writeInDatabase(data):
 
 #writes an integer form the form to the table integers in the database
 def writeIntToDatabase(data):
-    try{
+    try:
         cursor = db.cursor()
         cursor.execute(writeIntQuery, data)
         db.commit()
-        return 'OK'
-    } catch (e) {
-        return e
-    }
-    
+        data = {'success' : 'true'}
+        return (data, 200)
+    except Exception as e:
+        print(e)
+        data = {'error' : str(e)}
+        return (data, 422)
 
 if __name__ == '__main__':
     db = initiateDatabaseConnection();
     printTableFromDatabase()
-    app.run(host=hostName)
+    app.run(host=hostName, ssl_context=('/etc/letsencrypt/live/itsicherheit.ddnss.de/fullchain.pem', '/etc/letsencrypt/live/itsicherheit.ddnss.de/privkey.pem'))
 
 
