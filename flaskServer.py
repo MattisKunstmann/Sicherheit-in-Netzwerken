@@ -31,8 +31,7 @@ def gfg():
 def intToDB():
     if request.method == "POST":
         integer = request.form.get("integer")
-        writeIntToDatabase((integer,))
-        return "OK"
+        return writeIntToDatabase((integer,))
 
 @app.route('/', methods=["GET"])
 def get():
@@ -61,9 +60,15 @@ def writeInDatabase(data):
 
 #writes an integer form the form to the table integers in the database
 def writeIntToDatabase(data):
-    cursor = db.cursor()
-    cursor.execute(writeIntQuery, data)
-    db.commit()
+    try{
+        cursor = db.cursor()
+        cursor.execute(writeIntQuery, data)
+        db.commit()
+        return 'OK'
+    } catch (e) {
+        return e
+    }
+    
 
 if __name__ == '__main__':
     db = initiateDatabaseConnection();
