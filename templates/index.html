@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="de">
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
@@ -9,59 +9,83 @@
 </head>
 <body>
 <div class="containerHeadline">
-    <h1> Ein ganz normales Form </h1>
+    <h1> Willkommen </h1>
 
 </div>
 
 <div class="containerForm">
-    <p1> Geben Sie Ihr neues Passwort ein, um es zu ändern. Beachten Sie, dass Ihr Passwort mindestens acht Zeichen lang sein muss. </p1>
-<script>
-				function validate() {
-				  let password = document.getElementById("password").value;
-				  let passwordrep = document.getElementById("passwordrep").value;
-				  console.log(password);
-				  console.log(passwordrep);
-				  let text;
-				  if (password == passwordrep) {
-					if (password.length < 8) {
-					  text = "Passwort ist zu kurz";
-					} else {
-					  return true;
-					}
-				  } else {
-					text = "Passwörter stimmen nicht überein";
-				  }
-				  document.getElementById("text").innerHTML = text;
-				  return false;
-				}
-
-</script>
-
+    <p1> Registrieren Sie einen neuen Account</p1>
+    <script>
+        function validate() {
+            let password = document.getElementById("passwordregister").value;
+            let passwordrep = document.getElementById("passwordrep").value;
+            console.log(password);
+            console.log(passwordrep);
+            let text;
+            if (password == passwordrep) {
+                if (password.length < 8) {
+                    text = "Passwort ist zu kurz";
+                } else {
+                    return true;
+                }
+            } else {
+                text = "Passwörter stimmen nicht überein";
+            }
+            document.getElementById("text").innerHTML = text;
+            return false;
+        }
+    </script>
 
 
-<form action="http://127.0.0.1:5000/" target="_self" method="post" id="formId"
-      onsubmit="return validate();">
-    <label for="name">Name:</label><br>
-    <input type="name" id="name" name="name" required><br>
-    <label for="password">Passwort:</label><br>
-    <input type="password" id="password" name="password" required><br>
-    <label for="passwordrep">Passwort wiederholen:</label><br>
-    <input type="password" id="passwordrep" name="passwordrep" required><br>
-    <input type="submit" value="Abschicken">
-</form>
+    <form action="http://127.0.0.1:5000/register" target="_self" method="post" id="registerFormId"
+          onsubmit="return validate();">
+        <label for="name">Name:</label><br>
+        <input type="name" id="nameregister" name="name" required><br>
+        <label for="password">Passwort:</label><br>
+        <input type="password" id="passwordregister" name="password" required><br>
+        <label for="passwordrep">Passwort wiederholen:</label><br>
+        <input type="password" id="passwordrep" name="passwordrep" required><br>
+        <input type="submit" value="Abschicken">
+    </form>
     <p2 id="text"></p2>
 </div>
+<div class="containerForm">
+    <p1> Oder melden Sie sich mit einem existierendem Konto an.</p1>
+    <script>
+        function validate() {
+            let password = document.getElementById("password").value;
+            console.log(password);
+            let text;
+            if (password.length < 8) {
+                text = "Passwort ist zu kurz";
+            } else {
+                return true;
+            }
+            document.getElementById("text").innerHTML = text;
+            return false;
+        }
+    </script>
+    <form action="http://127.0.0.1:5000/login" target="_self" method="post" id="formId"
+          onsubmit="return validate();">
+        <label for="name">Name:</label><br>
+        <input type="name" id="name" name="name" required><br>
+        <label for="password">Passwort:</label><br>
+        <input type="password" id="password" name="password" required><br>
+        <input type="submit" value="Abschicken">
+    </form>
+</div>
+<img src={{qrcode}} alt={{qrcode}} width="500" height="500">
 </body>
 <style>
-    div.containerHeadline{
+    div.containerHeadline {
         margin-left: auto;
         margin-right: auto;
         font-size: 24px;
-       }
+    }
 
-       div.containerForm{
+    div.containerForm {
         text-align: left;
-        border:  2px solid;
+        border: 2px solid;
         border-radius: 10px;
         margin-left: auto;
         margin-right: auto;
@@ -71,25 +95,29 @@
         padding-right: 5px;
         width: 85%;
         background-color: white;
-       }
-    body{
+    }
+
+    body {
         background-color: White;
         margin: auto;
         padding: 20px;
         font-family: 'Roboto', sans-serif;
         background-color: aliceblue;
-        }
-    h1{
-         text-align: center;
-        }
-    p1{
-         font-size: 25px;
-         padding-bottom: 20px;
-        }
-    p2{
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    p1 {
+        font-size: 25px;
+        padding-bottom: 20px;
+    }
+
+    p2 {
         color: red;
         font-size: 16px;
-        }
+    }
 
     input[type=password], select {
         width: 100%;
@@ -99,7 +127,7 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box;
-        }
+    }
 
     input[type=submit] {
         width: 100%;
@@ -111,10 +139,10 @@
         border-radius: 4px;
         cursor: pointer;
         font-size: 20px;
-        }
+    }
 
     input[type=submit]:hover {
         background-color: Blue;
-        }
+    }
 </style>
 </html>
