@@ -9,13 +9,12 @@
 </head>
 <body>
 <div class="containerHeadline">
-    <h1> Ein ganz normales Form </h1>
+    <h1> Willkommen </h1>
 
 </div>
 
 <div class="containerForm">
-    <p1> Geben Sie Ihr neues Passwort ein, um es zu ändern. Beachten Sie, dass Ihr Passwort mindestens acht Zeichen lang
-        sein muss.
+    <p1> Registrieren
     </p1>
     <script>
         function validate() {
@@ -54,29 +53,40 @@
 </div>
 
 <br>
-
 <div class="containerForm">
-    <p1>Geben Sie einen Integer ein.</p1>
+    <p1> Einloggen
+    </p1>
     <script>
-        function validateInteger(){
-            let integer = parseInt(document.getElementById("integer").value);
-            console.log(integer);
-            if(Number.isInteger(integer)){
-                return true;
-            }else{
-                document.getElementById("integerResponse").innerHTML = "no valid Integer";
-            }
+        function validate() {
+            let password = document.getElementById("passwordLogin").value;
+            console.log(password);
+            console.log(passwordrep);
+            let text;
+                if (password.length < 8) {
+                    text = "Passwort ist zu kurz";
+                } else {
+                    return true;
+                }
+            document.getElementById("text").innerHTML = text;
             return false;
         }
+
     </script>
 
-    <form action="http://192.168.0.174:5000/" target="_self" method="post" id="integerForm" onsubmit="return validateInteger();">
-        <label for="integer">Integer: </label>
-        <input type="text" id="integer" name="integer" required><br>
+
+    <form action="http://192.168.0.174:5000/" target="_self" method="post" id="formId"
+          onsubmit="return validate();">
+        <label for="name">Name:</label><br>
+        <input type="name" id="nameLogin" name="name" required><br>
+        <label for="password">Passwort:</label><br>
+        <input type="password" id="passwordLogin" name="password" required><br>
         <input type="submit" value="Abschicken">
     </form>
-    <p2 id="integerResponse"></p2>
+    <p2 id="text"></p2>
 </div>
+
+<br>
+<img src={{qrcode}} alt="qrcode" width="500" height="500">
 
 
 </body>

@@ -9,8 +9,8 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-hostName = "localhost"
-serverPort = 8080
+# hostName = "localhost"
+# serverPort = 8080
 db = None;
 
 query1 = "select * from zugangsdaten"
@@ -105,8 +105,8 @@ def writeIntToDatabase(data):
         return (data, 422)
 
 if __name__ == '__main__':
-    db = initiateDatabaseConnection();
-    printTableFromDatabase()
-    app.run(host=hostName, ssl_context=('/etc/letsencrypt/live/itsicherheit.ddnss.de/fullchain.pem', '/etc/letsencrypt/live/itsicherheit.ddnss.de/privkey.pem'))
+    #db = initiateDatabaseConnection();
+    #printTableFromDatabase()
+    app.run()
 
 
