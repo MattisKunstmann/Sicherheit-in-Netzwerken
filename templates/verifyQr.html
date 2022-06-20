@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="de">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="../static/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<head><title>Sicherheit in Netzweken - Form</title>
+</head>
+<body>
+<div class="containerHeadline">
+    <h1> Willkommen </h1>
+    <h3> Scannen sie den QrCode mit dem Google Authenticator und geben sie den Aktuellen Code ein.</h3>
+</div>
+
+<img src={{qrcode}} alt="qrcode" width="500" height="500" class="center">
+
+<br>
+<div class="containerForm">
+    <p1> Einloggen
+    </p1>
+
+    <form action="https://itsicherheit.ddnss.de/verifyQr/" target="_self" method="post" id="formId"
+          onsubmit="return validate();">
+        <label for="name">Ihr OTP Code:</label><br>
+        <input type="text" id="otpCode" name="code" required><br>
+        <input type="hidden" id="name" name="name" value={{name}}>
+        <input type="hidden" id="password" name="password" value={{password}}>
+        <input type="submit" value="Abschicken">
+    </form>
+    <p2 id="text"></p2>
+</div>
+</body>
+</html>

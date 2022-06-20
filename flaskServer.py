@@ -1,6 +1,6 @@
 import pyotp
 import qrcode as qrcode
-from flask import Flask, request, render_template, make_response
+from flask import Flask, request, render_template, make_response, redirect, jsonify
 from flask_cors import CORS, cross_origin
 import mysql.connector
 from pyotp import totp
@@ -9,49 +9,89 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-# hostName = "localhost"
-# serverPort = 8080
+hostName = "0.0.0.0"
+serverPort = 8080
 db = None;
 
 query1 = "select * from zugangsdaten"
-#query2 = "insert into zugangsdaten values (%s,%s,%s)" #waay to secure
+query2 = "insert into zugangsdaten values (%s,%s,%s,%s)"
 writeIntQuery = "insert into integers (integerNumber) values (%s)"
 dbName = "sicherheit"
 
 
-@app.route('/register/', methods=["POST"])
+@app.route('/register/', methods=["POST", "GET"])
 def gfg():
     if request.method == "POST":
         name = request.form.get("name")
         password = request.form.get("password")
         saveDataToTextFile(name)
         saveDataToTextFile(password)
-        #writeInDatabase((666,name,password)) #the way to secure way
-        return make_response(writeInDatabase('insert into zugangsdaten values (666, "' + name + '", "' + password + '")'))
+        secretKey = pyotp.random_base32(32)
+        writeInDatabase((666,name,password,secretKey))
+        generateQrCode(secretKey, name)
+        return render_template("verifyQr.html", qrcode = "../" + qrCodePath, name = name, password = password)
+    if request.method == "GET":
+        return render_template("register.html")
 
-@app.route('/integer/', methods=["POST"])
-@cross_origin()
-def intToDB():
-    if request.method == "POST":
-        integer = request.form.get("integer")
-        saveDataToTextFile(integer)
-        return make_response(writeIntToDatabase((integer,)))
-qrCodeFileName = "qrCode.png"
+qrCodeFileName = "qrCode.jpg"
 staticLocation = "static"
 qrCodePath = staticLocation + "/" + qrCodeFileName
 
-def generateQrCode():
-    secretKey = pyotp.random_base32(32)
+def generateQrCode(secretKey, name):
     totp = pyotp.totp.TOTP(secretKey)
-    qrCode = qrcode.make(totp.provisioning_uri(name='alice@google.com', issuer_name='Secure App'))
-    oneTimePassword = totp.now()
+    qrCode = qrcode.make(totp.provisioning_uri(name=name, issuer_name='Secure App'))
     qrCode.save(qrCodePath)
+
+@app.route('/login/', methods=["GET", "POST"])
+def loginRedirect():
+    if request.method == "GET":
+        return redirect('/')
+    if request.method == "POST":
+        userOtp = request.form.get("code")
+        name = request.form.get("name")
+        password = request.form.get("password")
+        return loginWithOtp(name, password, userOtp)
 
 @app.route('/', methods=["GET"])
 def get():
     if request.method == "GET":
-        return render_template("index.html", qrcode = qrCodePath)
+        return render_template("login.html")
 
+@app.route('/verifyQr/', methods=["POST"])
+def getVerifyQr():
+    if request.method == "POST":
+        userOtp = request.form.get("code")
+        name = request.form.get("name")
+        password = request.form.get("password")
+        return loginWithOtp(name, password, userOtp)
+
+def loginWithOtp(name, password, otp):
+        cursor = db.cursor()
+        userQuery = "select * from zugangsdaten where name = (%s) and password = (%s)"
+        cursor.execute(userQuery, (name, password))
+        try:
+            table = cursor.fetchone()
+        finally:
+            print(table)
+            if not table is None and table[1] == name and table[2] == password:
+                totp = pyotp.totp.TOTP(table[3])
+                if otp == totp.now():
+                    print("success")
+                    return render_template("loggedIn.html")
+                else:
+                    print("wrong code")
+                    return make_response(
+                        jsonify(
+                            {"message": "wrong Code", "severity": "light"}
+                        ),
+                        401,)
+                return render_template("loggedIn.html")
+            else:
+                return make_response(
+                    jsonify(
+                            {"message": "wrong Code", "severity": "light"}
+                    ),
+                    401,)
 
 def saveDataToTextFile(str):
     file = open('data.txt', 'a')
@@ -76,9 +116,7 @@ def printTableFromDatabase():
 def writeInDatabase(data):
     try:
         cursor = db.cursor(buffered=True)
-        #cursor.execute(query2, data) #waaay to secure
-#        cursor.execute(data, multi=True)
-        cursor.execute("insert into zugangsdaten values (555, 'multitest', 'bliblablub'); select * from zugangsdaten;", multi=True)
+        cursor.execute(query2, data)
         result = "true";
         try:
             result = cursor.fetchall()
@@ -105,8 +143,8 @@ def writeIntToDatabase(data):
         return (data, 422)
 
 if __name__ == '__main__':
-    #db = initiateDatabaseConnection();
+    db = initiateDatabaseConnection();
     #printTableFromDatabase()
-    app.run()
+    app.run(host=hostName, ssl_context=('/etc/letsencrypt/live/itsicherheit.ddnss.de/fullchain.pem', '/etc/letsencrypt/live/itsicherheit.ddnss.de/privkey.pem'))
 
 

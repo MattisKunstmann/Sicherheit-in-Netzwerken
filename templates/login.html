@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="de">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="static/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<head><title>Sicherheit in Netzweken - Form</title>
+</head>
+<body>
+<div class="containerHeadline">
+    <h1> Willkommen </h1>
+
+</div>
+
+<div class="containerForm">
+    <p1> Einloggen
+    </p1>
+    <script>
+        function validate() {
+            let password = document.getElementById("passwordLogin").value;
+            console.log(password);
+            console.log(passwordrep);
+            let text;
+                if (password.length < 8) {
+                    text = "Passwort ist zu kurz";
+                } else {
+                    return true;
+                }
+            document.getElementById("text").innerHTML = text;
+            return false;
+        }
+
+    </script>
+
+
+    <form action="https://itsicherheit.ddnss.de/login/" target="_self" method="post" id="formId"
+          onsubmit="return validate();">
+        <label for="name">Name:</label><br>
+        <input type="name" id="nameLogin" name="name" required><br>
+        <label for="password">Passwort:</label><br>
+        <input type="password" id="passwordLogin" name="password" required><br>
+        <label for="code">Ihr One Time Password:</label><br>
+        <input type="text" id="code" name="code" required><br>
+        <input type="submit" value="Abschicken">
+    </form>
+    <p2 id="text"></p2>
+</div>
+<br>
+<div class="loginLink">
+<a href="/register/">Noch keinen Account? Hier registrieren.</a>
+</div>
+</body>
+</html>
